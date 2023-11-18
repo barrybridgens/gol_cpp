@@ -4,9 +4,25 @@
 //
 
 #include <SDL2/SDL.h>
+#include <unistd.h>
 
 #include "gol.h"
 
+
+// Initialise Cells
+//
+void init_cells()
+{
+  int row, col;
+  
+  for (row=0; row<TOTAL_ROWS_COLS; row++)
+  {
+    for (col=0; col<TOTAL_ROWS_COLS; col++)
+    {
+      cells[row][col] = DEAD;
+    }
+  }
+}
 
 // Draw Grid
 //
@@ -30,7 +46,32 @@ void draw_grid(SDL_Renderer * r)
     }
   }    
 }
+
+// Draw Cells
+//
+void draw_cells(SDL_Renderer * r)
+{
+  int row, col;
+  SDL_Rect rect;
+
+  rect.w = CELL_SIZE;
+  rect.h = CELL_SIZE;
+  SDL_SetRenderDrawColor(r, 10, 200, 10, 255);
   
+  for (row=0; row<TOTAL_ROWS_COLS; row++)
+  {
+    for (col=0; col<TOTAL_ROWS_COLS; col++)
+    {
+      if (cells[row][col] == ALIVE)
+      {
+	rect.x = col * CELL_SIZE;
+	rect.y = row * CELL_SIZE;
+	SDL_RenderFillRect(r, &rect);
+      }
+    }
+  }    
+}
+
 
 // Main
 //
@@ -41,8 +82,19 @@ int main()
   auto renderer = SDL_CreateRenderer(window, -1, 0);
   SDL_Event e;
 
-  SDL_Rect rect{500, 500, 10, 10};
-	
+  useconds_t sleep_time = 250;
+
+  init_cells();
+
+  // TEST CODE
+
+  for (int x=20; x<40; x++)
+  {
+    cells[40][x] = ALIVE;
+  }
+  
+  // END OF TEST CODE
+  
   bool running = true;
 
   while(running)
@@ -69,6 +121,10 @@ int main()
       // Draw
       //
       draw_grid(renderer);
+
+      draw_cells(renderer);
+
+      usleep(sleep_time);
 
       // Display
       //
