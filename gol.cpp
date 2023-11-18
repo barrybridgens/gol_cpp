@@ -123,6 +123,8 @@ int main()
 	if (e.key.keysym.sym == SDLK_q) { running = false; }
 	if (e.key.keysym.sym == SDLK_r) { run = true; }
 	if (e.key.keysym.sym == SDLK_s) { stop = true; }
+	if (e.key.keysym.sym == SDLK_i) { if (sleep_time > 2) { sleep_time = sleep_time / 2; } }
+	if (e.key.keysym.sym == SDLK_d) { sleep_time = sleep_time * 2; }
       }
       if (e.type == SDL_MOUSEBUTTONDOWN) { button = true; }
       if (e.type == SDL_MOUSEBUTTONUP) { button = false; }
