@@ -22,6 +22,7 @@ void init_cells()
       cells[row][col] = DEAD;
     }
   }
+  std::copy(&cells[0][0], &cells[0][0]+TOTAL_ROWS_COLS*TOTAL_ROWS_COLS, &new_cells[0][0]);
 }
 
 // Draw Grid
@@ -72,6 +73,21 @@ void draw_cells(SDL_Renderer * r)
   }    
 }
 
+// Clear Cells
+//
+void clear_cells()
+{
+  int row, col;
+  
+  for (row=0; row<TOTAL_ROWS_COLS; row++)
+  {
+    for (col=0; col<TOTAL_ROWS_COLS; col++)
+    {
+      cells[row][col] = DEAD;
+    }
+  }
+  std::copy(&cells[0][0], &cells[0][0]+TOTAL_ROWS_COLS*TOTAL_ROWS_COLS, &new_cells[0][0]);
+}
 
 // Main
 //
@@ -83,17 +99,10 @@ int main()
   SDL_Event e;
 
   useconds_t sleep_time = 250;
+  bool button = false;
+  int row, col;
 
   init_cells();
-
-  // TEST CODE
-
-  for (int x=20; x<40; x++)
-  {
-    cells[40][x] = ALIVE;
-  }
-  
-  // END OF TEST CODE
   
   bool running = true;
 
@@ -105,9 +114,17 @@ int main()
 	{
 	  if (e.type == SDL_QUIT) { running = false; }
 	  if (e.type == SDL_KEYDOWN)
-	    {
-	      if (e.key.keysym.sym == SDLK_q) { running = false; }
-	    }
+	  {
+	    if (e.key.keysym.sym == SDLK_q) { running = false; }
+	  }
+	  if (e.type == SDL_MOUSEBUTTONDOWN) { button = true; }
+	  if (e.type == SDL_MOUSEBUTTONUP) { button = false; }
+	  if (e.type == SDL_MOUSEMOTION)
+	  {
+	    col = e.motion.x / CELL_SIZE;
+	    row = e.motion.y / CELL_SIZE;
+            if ((button) && (cells[row][col] == DEAD)) { cells[row][col] = ALIVE; }
+	  }    
 	}
 
       // Stuff!
