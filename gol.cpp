@@ -88,6 +88,42 @@ void clear_cells()
   std::copy(&cells[0][0], &cells[0][0]+TOTAL_ROWS_COLS*TOTAL_ROWS_COLS, &new_cells[0][0]);
 }
 
+void glider_down_left(int x, int y)
+{
+  cells[x][y] = ALIVE;
+  cells[x + 1][y] = ALIVE;
+  cells[x + 1][y + 1] = ALIVE;
+  cells[x + 2][y + 1] = ALIVE;
+  cells[x][y + 2] = ALIVE;
+}
+
+void glider_up_right(int x, int y)
+{
+  cells[x][y] = ALIVE;
+  cells[x - 1][y] = ALIVE;
+  cells[x - 1][y - 1] = ALIVE;
+  cells[x - 2][y - 1] = ALIVE;
+  cells[x][y - 2] = ALIVE;
+}
+
+void glider_up_left(int x, int y)
+{
+  cells[x][y] = ALIVE;
+  cells[x - 1][y] = ALIVE;
+  cells[x - 1][y + 1] = ALIVE;
+  cells[x - 2][y + 1] = ALIVE;
+  cells[x][y + 2] = ALIVE;
+}
+
+void glider_down_right(int x, int y)
+{
+  cells[x][y] = ALIVE;
+  cells[x + 1][y] = ALIVE;
+  cells[x + 1][y - 1] = ALIVE;
+  cells[x + 2][y - 1] = ALIVE;
+  cells[x][y - 2] = ALIVE;
+}
+
 // Main
 //
 int main()
@@ -125,6 +161,11 @@ int main()
 	if (e.key.keysym.sym == SDLK_s) { stop = true; }
 	if (e.key.keysym.sym == SDLK_i) { if (sleep_time > 2) { sleep_time = sleep_time / 2; } }
 	if (e.key.keysym.sym == SDLK_d) { sleep_time = sleep_time * 2; }
+	if (e.key.keysym.sym == SDLK_g) { glider_up_right((TOTAL_ROWS_COLS - CELL_SIZE),CELL_SIZE);  }
+	if (e.key.keysym.sym == SDLK_y) { glider_down_left(CELL_SIZE,(TOTAL_ROWS_COLS - CELL_SIZE));  }
+	if (e.key.keysym.sym == SDLK_h) { glider_up_left((TOTAL_ROWS_COLS - CELL_SIZE), (TOTAL_ROWS_COLS - CELL_SIZE));  }	
+	if (e.key.keysym.sym == SDLK_t) { glider_down_right(CELL_SIZE, CELL_SIZE);  }
+	if (e.key.keysym.sym == SDLK_c) { clear_cells(); }
       }
       if (e.type == SDL_MOUSEBUTTONDOWN) { button = true; }
       if (e.type == SDL_MOUSEBUTTONUP) { button = false; }
