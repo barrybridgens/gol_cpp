@@ -1,9 +1,43 @@
+// Game of Life
+//
+// by Barry Bridgens
+//
+
 #include <SDL2/SDL.h>
 
+#include "gol.h"
+
+
+// Draw Grid
+//
+void draw_grid(SDL_Renderer * r)
+{
+  int row, col;
+  SDL_Rect rect;
+
+  rect.w = CELL_SIZE;
+  rect.h = CELL_SIZE;
+  SDL_SetRenderDrawColor(r, 150, 150, 150, 255);
+  
+  for (row=0; row<TOTAL_ROWS_COLS; row++)
+  {
+    for (col=0; col<TOTAL_ROWS_COLS; col++)
+    {
+      rect.x = col * CELL_SIZE;
+      rect.y = row * CELL_SIZE;
+      //SDL_RenderFillRect(renderer, &rect);
+      SDL_RenderDrawRect(r, &rect);
+    }
+  }    
+}
+  
+
+// Main
+//
 int main()
 {
   SDL_Init(SDL_INIT_EVERYTHING);
-  auto window = SDL_CreateWindow("Test", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, 0);
+  auto window = SDL_CreateWindow("Game of Life", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SC_WIDTH_HEIGHT, SC_WIDTH_HEIGHT, 0);
   auto renderer = SDL_CreateRenderer(window, -1, 0);
   SDL_Event e;
 
@@ -34,10 +68,7 @@ int main()
 
       // Draw
       //
-      SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-      //SDL_RenderFillRect(renderer, &rect);
-      SDL_RenderDrawRect(renderer, &rect);
-      SDL_RenderDrawLine(renderer, 400, 400, 450, 450);
+      draw_grid(renderer);
 
       // Display
       //
